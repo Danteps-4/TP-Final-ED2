@@ -1,0 +1,41 @@
+; Encabezado
+    LIST p=16F887
+    #include "p16f887.inc"
+    
+; Palabras de configuración
+   ; __CONFIG _CONFIG1, _FOSC_INTRC_NOCLKOUT & _WDTE_OFF & _MCLRE_ON & _LVP_OFF
+    
+; Creación de alias para los registros a utilizar
+    CBLOCK 0x21	 
+    NUM1
+    NUM2
+    SUMA
+    CARRY
+    ENDC
+    
+;ORG DE MEMORIA
+    ORG 0x00
+    GOTO START 
+    
+    ORG 0x05
+START:
+    ;CARGA DE DATOS
+    MOVLW 0x05 ; Puedo usar un valor más grande para forzar un overflow 0xFF
+    MOVWF NUM1
+    MOVLW 0x3
+    MOVWF NUM2
+    
+
+    MOVF NUM1, W	; Cargo el 1er dato en w
+    ADDWF NUM2, W	; Sumo el 2do dato a lo que tenía en W
+    MOVWF SUMA		; Muevo el resultado al registro 0x23
+    CLRF CARRY		; Limpio el registro 0x24
+    
+    BTFSC STATUS, C	; Pregunto si no hubo Carry
+    INCF CARRY		; Si hubo carry incremento en 1 el 0x24
+    
+    GOTO $		; Loop para no ejecutar basura
+       
+    END
+    
+    

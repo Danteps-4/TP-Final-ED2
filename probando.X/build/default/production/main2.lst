@@ -1,0 +1,54 @@
+
+
+Microchip MPLAB XC8 Assembler V3.00 build 20241204225717 
+                                                                                                           Sun Jun 01 00:50:20 2025
+
+
+     1                           	processor	16F887
+     2                           	pagewidth 132
+     3                           	psect	pa_nodes0,global,class=CODE,space=0,delta=2
+     4                           
+     5                           ;-------------------------------
+     6                           ; CONFIGURACIÓN
+     7                           ;-------------------------------
+     8                           ;-------------------------------
+     9                           ; VARIABLES
+    10                           ;-------------------------------
+    11  0020                     CONTADOR1       equ	32
+    12  0021                     CONTADOR2       equ	33
+    13                           
+    14                           ;-------------------------------
+    15                           ; PROGRAMA PRINCIPAL
+    16                           ;-------------------------------
+    17  0000                     	org	0
+    18  0000  2800'              	goto	INICIO
+    19  0005                     	org	5
+    20  0005  0180'              	clrf	TRISB	; PORTB como salida
+    21  0006  0180'              	clrf	PORTB	; Limpiar PORTB
+    22  0007  1400'              	bsf	PORTB,0
+    23  0008  2000'              	call	DELAY
+    24  0009  1000'              	bcf	PORTB,0
+    25  000A  2000'              	call	DELAY
+    26  000B  2800'              	goto	LOOP
+    27                           
+    28                           ;-------------------------------
+    29                           ; SUBRUTINA DE RETARDO
+    30                           ;-------------------------------
+    31  000C  30FA               	movlw	250
+    32  000D  00A0               	movwf	32
+    33  000E  30FA               	movlw	250
+    34  000F  00A1               	movwf	33
+    35  0010  0000               	nop
+    36  0011  0000               	nop
+    37  0012  0BA1               	decfsz	33,f
+    38  0013  2800'              	goto	RETARDO2
+    39  0014  0BA0               	decfsz	32,f
+    40  0015  2800'              	goto	RETARDO1
+    41  0016  0008               	return
+
+
+Microchip Technology PIC Macro Assembler V3.00 build 20241204225717 
+Symbol Table                                                                                               Sun Jun 01 00:50:20 2025
+
+         LOOP 0000*         DELAY 0000*         PORTB 0000*         TRISB 0000*        INICIO 0000*      RETARDO1 0000* 
+     RETARDO2 0000*     CONTADOR1 0020      CONTADOR2 0021  

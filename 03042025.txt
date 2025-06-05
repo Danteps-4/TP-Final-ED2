@@ -1,0 +1,168 @@
+; ** Encabezado **
+    LIST P=16F887			
+    #include "p16f887.inc"		
+
+;** Configuración General **	
+    __CONFIG _CONFIG1, _FOSC_INTRC_NOCLKOUT & _WDTE_OFF & _MCLRE_ON & _LVP_OFF
+
+;** Definicion de Variables **
+    CBLOCK 0x70
+    CONTADOR1
+    CONTADOR2
+    ENDC
+    ; Another option for variable declaration
+    ;CONTADOR1 EQU 0x70
+    ;CONTADOR2 EQU 0x71
+    
+;** Inicio del Micro **
+    ORG	0x00
+    GOTO START
+    ;ORG 0x04
+    ;GOTO ISR
+    ORG 0x05
+    
+START:
+    BANKSEL ANSEL   ; Move to bank 11
+    CLRF ANSEL	    ; Analogic off for debugging purposes
+    BANKSEL TRISA   ; Move to bank 01
+    CLRF TRISA	    ; All PORTA pins as output
+
+    ; ADD CODE TO STORE NUMBERS
+    ; PASTE HERE (A) OR (B)
+    ;
+    ;
+    ;
+    ; ADD CODE TO MOVE NUMBERS FROM REGISTER TO PORT
+    ; PASTE HERE (C) OR (D)
+    ;
+    ;
+    ;
+    
+DELAY:
+    MOVLW .255
+    MOVWF CONTADOR1
+L1:
+    MOVLW .255
+    MOVWF CONTADOR2
+L2:	
+    DECFSZ CONTADOR2, F
+    GOTO L2
+    DECFSZ CONTADOR1, F
+    GOTO L1
+    RETURN
+	
+    END
+/*  
+    ; OPTION (A)
+    ; Stores 10 numbers, from 0xA0 to 0xA7, direct addressing
+    MOVLW 0x11	; Load a literal into W
+    MOVWF 0xA0	; Move the literal to a register
+    MOVLW 0x22
+    MOVWF 0xA1
+    MOVLW 0x44
+    MOVWF 0xA2
+    MOVLW 0x88
+    MOVWF 0xA3
+    MOVLW 0xAA
+    MOVWF 0xA4
+    MOVLW 0xCC
+    MOVWF 0xA5
+    MOVLW 0xEE
+    MOVWF 0xA6
+    MOVLW 0xFF
+    MOVWF 0xA7
+*/
+    
+/*  
+    ; OPTION (B)
+    ; Stores 10 numbers, from 0xA0 to 0xA7, indirect addressing
+    MOVLW 0XA0	; Load the first address
+    MOVWF FSR	; Move it into FSR
+    MOVLW 0x11	; Load the first literal into W
+    MOVWF INDF	; Move it to the address pointed by FSR
+    INCF FSR	; Increase FSR so it points to next address
+    MOVLW 0x22
+    MOVWF INDF
+    INCF FSR
+    MOVLW 0x44
+    MOVWF INDF
+    INCF FSR
+    MOVLW 0x88
+    MOVWF INDF
+    INCF FSR
+    MOVLW 0xAA
+    MOVWF INDF
+    INCF FSR
+    MOVLW 0xCC
+    MOVWF INDF
+    INCF FSR
+    MOVLW 0xEE
+    MOVWF INDF
+    INCF FSR
+    MOVLW 0xFF
+    MOVWF INDF
+*/
+    
+/*  
+    ; OPTION (C)
+    ; Loads stored numbers from 0xA0 to 0xA7 into PortA, direct addressing
+LOOP:
+    BANKSEL 0x80    ; Swap to bank 01
+    MOVF 0xA0, W    ; Move the data into W
+    BANKSEL PORTA   ; Swap to bank 00
+    MOVWF PORTA	    ; Move the data from W to PORTA
+    CALL DELAY	    ; Delay for leds
+    BANKSEL 0x80
+    MOVF 0xA1, W
+    BANKSEL PORTA
+    MOVWF PORTA
+    CALL DELAY
+    BANKSEL 0x80
+    MOVF 0xA2, W
+    BANKSEL PORTA
+    MOVWF PORTA
+    CALL DELAY
+    BANKSEL 0x80
+    MOVF 0xA3, W
+    BANKSEL PORTA
+    MOVWF PORTA
+    CALL DELAY
+    BANKSEL 0x80
+    MOVF 0xA4, W
+    BANKSEL PORTA
+    MOVWF PORTA
+    CALL DELAY
+    BANKSEL 0x80
+    MOVF 0xA5, W
+    BANKSEL PORTA
+    MOVWF PORTA
+    CALL DELAY
+    BANKSEL 0x80
+    MOVF 0xA6, W
+    BANKSEL PORTA
+    MOVWF PORTA
+    CALL DELAY
+    BANKSEL 0x80
+    MOVF 0xA7, W
+    BANKSEL PORTA
+    MOVWF PORTA
+    CALL DELAY
+    GOTO LOOP	    ; Go to the beginning of the loading process
+*/
+    
+/*  
+    ; OPTION (D)
+    ; Loads stored numbers from 0xA0 to 0xA7 into PortA, indirect addressing
+    BANKSEL PORTA   ; Swap to bank 00 to use porta
+LOOP:
+    MOVLW 0XA0	    ; Load the first address
+    MOVWF FSR	    ; Into FSR
+LOAD:
+    MOVF INDF, W    ; Take data from the current register into W
+    MOVWF PORTA	    ; Move it to PORTA
+    CALL DELAY	    ; Delay for LED
+    INCF FSR, F	    ; Increase FSR and store it in FSR so it points to the next address
+    BTFSS FSR, 3    ; Ask if we have no more data
+    GOTO LOAD	    ; Repeat if data still available
+    GOTO LOOP	    ; If run out of data, go and restart the FSR
+*/

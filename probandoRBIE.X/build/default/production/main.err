@@ -1,0 +1,36 @@
+Warning[205] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 1 : Found directive in column 1. (list)
+Warning[215] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 1 : Processor superseded by command line.  Verify processor symbol.
+Warning[205] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 2 : Found directive in column 1. (include)
+Message[301] C:\PROGRAM FILES (X86)\MICROCHIP\MPLABX\V5.35\MPASMX\P16F877.INC 34 : MESSAGE: (Processor-header file mismatch.  Verify selected processor.)
+Warning[205] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 4 : Found directive in column 1. (ORG)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 5 : Found opcode in column 1. (nop)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 6 : Found opcode in column 1. (nop)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 7 : Found opcode in column 1. (goto)
+Warning[205] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 8 : Found directive in column 1. (ORG)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 9 : Found opcode in column 1. (incf)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 10 : Found opcode in column 1. (bcf)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 11 : Found opcode in column 1. (retfie)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 13 : Found opcode in column 1. (bcf)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 14 : Found opcode in column 1. (bcf)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 15 : Found opcode in column 1. (clrf)
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 15 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 16 : Found opcode in column 1. (clrf)
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 16 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 17 : Found opcode in column 1. (clrf)
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 17 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 18 : Found opcode in column 1. (clrf)
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 18 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 19 : Found opcode in column 1. (clrf)
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 19 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 20 : Found opcode in column 1. (bsf)
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 20 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 21 : Found opcode in column 1. (movlw)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 22 : Found opcode in column 1. (movwf)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 23 : Found opcode in column 1. (bsf)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 24 : Found opcode in column 1. (bcf)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 25 : Found opcode in column 1. (bcf)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 26 : Found opcode in column 1. (clrf)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 28 : Found opcode in column 1. (nop)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 29 : Found opcode in column 1. (nop)
+Warning[203] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 30 : Found opcode in column 1. (goto)
+Warning[205] C:\USERS\USUARIO\DESKTOP\MPLABTEST\PROBANDORBIE.X\MAIN.ASM 31 : Found directive in column 1. (END)
