@@ -1,5 +1,5 @@
 MPLINK 5.09, LINKER
-Linker Map File - Created Thu Jun 05 14:48:28 2025
+Linker Map File - Created Fri Jun 06 19:32:28 2025
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
@@ -7,7 +7,7 @@ Linker Map File - Created Thu Jun 05 14:48:28 2025
                    .org_0       code   0x000000    program   0x000002
                    .cinit    romdata   0x000001    program   0x000004
                    .org_1       code   0x000004    program   0x000002
-                   .org_2       code   0x000005    program   0x0000f6
+                   .org_2       code   0x000005    program   0x000102
 .config_2007_BUILD/DEFAULT/DEBUG/MAIN.O       code   0x002007    program   0x000002
 .config_2008_BUILD/DEFAULT/DEBUG/MAIN.O       code   0x002008    program   0x000002
 
@@ -17,26 +17,27 @@ Linker Map File - Created Thu Jun 05 14:48:28 2025
                                Start         End      
                            ---------   ---------      
                             0x000000    0x000002      
-                            0x000004    0x00007f      
+                            0x000004    0x000085      
                             0x002007    0x002008      
-            129 out of 8455 program addresses used, program memory utilization is 1%
+            135 out of 8455 program addresses used, program memory utilization is 1%
 
 
 
                               Symbols - Sorted by Name
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-               BUSCATECLA   0x000071    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-         DONE_TECLADO_INT   0x00007d    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-                   ESPERA   0x000053    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+           ACTIVAR_ALARMA   0x000080    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+               BUSCATECLA   0x000075    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+         DONE_TECLADO_INT   0x000083    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+                   ESPERA   0x000054    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
                    INICIO   0x000005    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-              INT_TECLADO   0x000058    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-                 INT_TMR0   0x00004d    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-                      ISR   0x000041    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-                     LOOP   0x000030    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-                OTRATECLA   0x00005c    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-              RETARDO10MS   0x00004f    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-                    TABLA   0x000034    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+              INT_TECLADO   0x000059    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+                 INT_TMR0   0x00004e    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+                      ISR   0x000042    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+                     LOOP   0x000031    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+                OTRATECLA   0x00005e    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+              RETARDO10MS   0x000050    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+                    TABLA   0x000035    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
 
 
 
@@ -44,15 +45,16 @@ Linker Map File - Created Thu Jun 05 14:48:28 2025
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
                    INICIO   0x000005    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-                     LOOP   0x000030    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-                    TABLA   0x000034    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-                      ISR   0x000041    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-                 INT_TMR0   0x00004d    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-              RETARDO10MS   0x00004f    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-                   ESPERA   0x000053    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-              INT_TECLADO   0x000058    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-                OTRATECLA   0x00005c    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-               BUSCATECLA   0x000071    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
-         DONE_TECLADO_INT   0x00007d    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+                     LOOP   0x000031    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+                    TABLA   0x000035    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+                      ISR   0x000042    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+                 INT_TMR0   0x00004e    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+              RETARDO10MS   0x000050    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+                   ESPERA   0x000054    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+              INT_TECLADO   0x000059    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+                OTRATECLA   0x00005e    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+               BUSCATECLA   0x000075    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+           ACTIVAR_ALARMA   0x000080    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
+         DONE_TECLADO_INT   0x000083    program     static C:\Users\Usuario\Desktop\mplabtest\probando2.X\main.asm
 
 

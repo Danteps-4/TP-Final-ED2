@@ -3,8 +3,8 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>probandoRBIE</name>
-            <creation-uuid>975dfb8d-4276-40ad-8ce9-cbe5f7ed9e4a</creation-uuid>
+            <name>tecladoPolling</name>
+            <creation-uuid>adbf7f0d-66f4-48e6-b441-6ce1b7e55320</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions/>
             <cpp-extensions/>

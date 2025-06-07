@@ -27,11 +27,10 @@ ACTIVADA EQU 0x25
 
 INICIO
     BANKSEL OPTION_REG
-    MOVLW b'01110111'	;Prescaler 256
+    MOVLW b'10000111'	;Prescaler 256
     MOVWF OPTION_REG
     
-    BANKSEL PORTB   
-    CLRF PORTB		;Limpio PORTB
+    
     BANKSEL ANSELH
     CLRF ANSELH		;Limpio ANSELH para I/O digitales
     BANKSEL TRISB
@@ -41,13 +40,7 @@ INICIO
     MOVLW b'10000000'
     MOVWF PORTC		;Activo el display
     BANKSEL TRISC
-    CLRF TRISC		;Seteo todo el PORTC como salidas para usar como display
-    BANKSEL PORTA
-    CLRF PORTA
-    BANKSEL ANSEL
-    CLRF ANSEL		;Limpio ANSEL para I/O digitales
-    BANKSEL TRISA
-    CLRF TRISA		;Habilito el PORTA todo como salidas (para poner el led que indica que la alarma esta activada y el buzzer)
+    CLRF TRISC		;Seteo todo el PORTC como salidas para usar el display
    
     
     BANKSEL INTCON
@@ -55,72 +48,9 @@ INICIO
     BSF INTCON,T0IE	;seteo T0IE -> interrupciones por TIMER0
     BCF INTCON,T0IF	;limpio TOIF -> banderae de interrupcion por TIMER0
     BSF INTCON,PEIE	;seteo PEIE -> interrupciones por perifericos
-    BSF INTCON,RBIE	;seteo RBIE -> interrupciones por RB4-RB7
-    BCF INTCON,RBIF	;limpio RBIF -> bandera de interrupcion por RB4-RB7
     BCF INTCON,INTF
     
-    BANKSEL IOCB
-    MOVLW b'11110000'
-    MOVWF IOCB		;Seteo que se pueda interrumpir por RB4-RB7
-    
-LOOP
-    NOP
-    NOP
-    NOP
-    GOTO LOOP
-
-TABLA
-    ADDWF PCL,F
-    RETLW b'10000110'	;1
-    RETLW b'10100111'	;4
-    RETLW b'10000111'	;7
-    RETLW b'11100011'	;*
-    
-    RETLW b'11011011'	;2
-    RETLW b'11101101'	;5
-    RETLW b'11111111'	;8
-    RETLW b'10111111'	;0
-    
-    RETLW b'11001111'	;3
-    RETLW b'11111101'	;6
-    RETLW b'11100111'	;9
-    RETLW b'11110110'	;#
-
-ISR 
-    MOVWF SALVAW
-    SWAPF STATUS,W
-    MOVWF SALVAS
-    
-    BTFSC INTCON,T0IF
-    CALL INT_TMR0
-    
-    BTFSC INTCON,RBIF
-    CALL INT_TECLADO
-    
-    SWAPF SALVAS,W
-    MOVWF STATUS
-    SWAPF SALVAW,F
-    SWAPF SALVAW,W
-    
-    RETFIE
-
-INT_TMR0
-    BCF INTCON,T0IF
-    RETURN
-
-RETARDO10MS    
-    BANKSEL TMR0
-    MOVLW D'216'    ;Precarga de 216 para que el retardo dure 10ms
-    MOVWF TMR0
-ESPERA
-    BANKSEL INTCON
-    BTFSS INTCON,T0IF
-    GOTO ESPERA
-    RETURN    
-
-INT_TECLADO
-    CALL RETARDO10MS
-    
+SCAN
     CLRF NUMTECLA
     MOVLW b'00000110'
     MOVWF FILETEST
@@ -147,11 +77,11 @@ OTRATECLA
     
     BSF STATUS,C
     RLF FILETEST,F
-    MOVLW 0xC
+    MOVLW 0x0C
     SUBWF NUMTECLA,W
     BTFSC STATUS,Z
-    GOTO DONE_TECLADO_INT   ;Llegó a 12, salgo
-    GOTO OTRATECLA	    ;NO llegó a 12, busca proxima fila
+    GOTO SCAN
+    GOTO OTRATECLA
   
 BUSCATECLA
     CALL RETARDO10MS
@@ -161,20 +91,54 @@ BUSCATECLA
     BANKSEL PORTC
     MOVWF PORTC
     
-    MOVF NUMTECLA,W
-    SUBLW 0x08		    ;Se presiono la tecla 1?
-    BTFSS STATUS,Z
-    GOTO DONE_TECLADO_INT   ;No se presionó, no prendo el led
-    GOTO ACTIVAR_ALARMA	    ;Si se presionó, se prende el led y se activa la alarma
+    GOTO SCAN
+
+TABLA
+    ADDWF PCL,F
+    RETLW b'10000110'	;1
+    RETLW b'10100111'	;4
+    RETLW b'10000111'	;7
+    RETLW b'11100011'	;*
     
-ACTIVAR_ALARMA
-    MOVLW 0x01
-    MOVWF ACTIVADA
-    BSF PORTA,RB0
+    RETLW b'11011011'	;2
+    RETLW b'11101101'	;5
+    RETLW b'11111111'	;8
+    RETLW b'10111111'	;0
     
-DONE_TECLADO_INT
-    BCF INTCON,RBIF
+    RETLW b'11001111'	;3
+    RETLW b'11111101'	;6
+    RETLW b'11100111'	;9
+    RETLW b'11110110'	;#
+
+ISR 
+    MOVWF SALVAW
+    SWAPF STATUS,W
+    MOVWF SALVAS
+    
+    BTFSC INTCON,T0IF
+    CALL INT_TMR0
+    
+    SWAPF SALVAS,W
+    MOVWF STATUS
+    SWAPF SALVAW,F
+    SWAPF SALVAW,W
+    
+    RETFIE
+
+INT_TMR0
     BCF INTCON,T0IF
     RETURN
+
+RETARDO10MS    
+    BANKSEL TMR0
+    MOVLW D'60'    ;Precarga de 216 para que el retardo dure 10ms
+    MOVWF TMR0
+ESPERA
+    BANKSEL INTCON
+    BTFSS INTCON,T0IF
+    GOTO ESPERA
+    RETURN    
     
     END
+
+
