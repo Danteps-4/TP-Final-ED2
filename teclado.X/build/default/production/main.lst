@@ -1,4 +1,4 @@
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE  1
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -32,179 +32,278 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
   00000022            00015 AUX_KEYNUM EQU 0x22
   00000023            00016 SALVAW EQU 0x23
   00000024            00017 SALVAS EQU 0x24
-                      00018 
-                      00019 ;-------------------------------
-                      00020 ; PROGRAMA PRINCIPAL
-                      00021 ;-------------------------------
-                      00022     ORG 0x00
-0000   2???           00023     GOTO INICIO
-                      00024     ORG 0x04
-0004   2???           00025     GOTO ISR
-                      00026     ORG 0x05
-                      00027 
-0005                  00028 INICIO
-0005   1683 1703      00029     BANKSEL ANSELH
+  00000025            00018 ACTIVADA EQU 0x25
+  00000026            00019 DISPARADA EQU 0x26
+  00000027            00020 SEQUENCE_POS EQU 0x27
+                      00021 
+                      00022 ;-------------------------------
+                      00023 ; PROGRAMA PRINCIPAL
+                      00024 ;-------------------------------
+                      00025     ORG 0x00
+0000   2???           00026     GOTO INICIO
+                      00027     ORG 0x04
+0004   2???           00028     GOTO ISR
+                      00029     ORG 0x05
+                      00030 
+0005                  00031 INICIO
+0005   1683 1703      00032     BANKSEL ANSELH
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0007   0189           00030     CLRF ANSELH
-0008   1683 1303      00031     BANKSEL OPTION_REG
-000A   30F7           00032     MOVLW b'11110111'   ;Pullups PORTB=OFF, T0CS=T0CKI (pin para detener el timer), Prescaler 256
+0007   0189           00033     CLRF ANSELH
+0008   1683 1303      00034     BANKSEL OPTION_REG
+000A   30F7           00035     MOVLW b'11110111'   ;Pullups PORTB=OFF, T0CS=T0CKI (pin para detener el timer), Prescaler 256
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-000B   0081           00033     MOVWF OPTION_REG
-000C   1683 1303      00034     BANKSEL TRISB
-000E   30F0           00035     MOVLW b'11110000'
+000B   0081           00036     MOVWF OPTION_REG
+000C   1683 1303      00037     BANKSEL TRISB
+000E   30F0           00038     MOVLW b'11110000'
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-000F   0086           00036     MOVWF TRISB
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0010   0187           00037     CLRF TRISC
-                      00038     ;MOVWF WPUB
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE  2
+000F   0086           00039     MOVWF TRISB
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0011   0096           00039     MOVWF IOCB
-0012   1283 1303      00040     BANKSEL PORTB
-0014   0186           00041     CLRF PORTB
-0015   0886           00042     MOVF PORTB,F
-0016   3080           00043     MOVLW b'10000000'
-0017   0087           00044     MOVWF PORTC
-0018   1283 1303      00045     BANKSEL INTCON
-001A   018B           00046     CLRF INTCON
-001B   30C8           00047     MOVLW b'11001000'   ; Se habilitan interrupciones globales, de perifericos y por PORTB
-001C   048B           00048     IORWF INTCON,F
-                      00049     
-001D                  00050 LOOP
-001D   0000           00051     NOP
-001E   0000           00052     NOP
-001F   0000           00053     NOP
-0020   2???           00054     GOTO LOOP
-                      00055     
-0021                  00056 TABLA
-0021   0782           00057     ADDWF PCL,F
-0022   3486           00058     RETLW b'10000110'   ;1
-0023   34A7           00059     RETLW b'10100111'   ;4
-0024   3487           00060     RETLW b'10000111'   ;7
-0025   34F6           00061     RETLW b'11110110'   ;*
-                      00062     
-0026   34DB           00063     RETLW b'11011011'   ;2
-0027   34ED           00064     RETLW b'11101101'   ;5
-0028   34FF           00065     RETLW b'11111111'   ;8
-0029   34BF           00066     RETLW b'10111111'   ;0
-                      00067     
-002A   34CF           00068     RETLW b'11001111'   ;3
-002B   34FD           00069     RETLW b'11111101'   ;6
-002C   34E7           00070     RETLW b'11100111'   ;9
-002D   34F6           00071     RETLW b'11110110'   ;#
-                      00072     
-002E                  00073 ISR
-                      00074     ; Guardo el contexto
-002E   00A3           00075     MOVWF SALVAW
-002F   0E03           00076     SWAPF STATUS,W
-0030   00A4           00077     MOVWF SALVAS
-                      00078     
-0031   190B           00079     BTFSC INTCON,T0IF
-0032   2???           00080     CALL INT_TMR0
-                      00081     
-0033   180B           00082     BTFSC INTCON,RBIF
-0034   2???           00083     CALL INT_TECLADO
-                      00084     
-                      00085     ; Recupero el contexto
-0035   0E24           00086     SWAPF SALVAS,W
-0036   0083           00087     MOVWF STATUS
-0037   0EA3           00088     SWAPF SALVAW,F
-0038   0E23           00089     SWAPF SALVAW,W
-                      00090     
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE  3
+0010   0187           00040     CLRF TRISC
+                      00041     ;MOVWF WPUB
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0011   0096           00042     MOVWF IOCB
+0012   1283 1303      00043     BANKSEL PORTB
+0014   0186           00044     CLRF PORTB
+0015   0886           00045     MOVF PORTB,F
+0016   3080           00046     MOVLW b'10000000'
+0017   0087           00047     MOVWF PORTC
+0018   1283 1303      00048     BANKSEL INTCON
+001A   018B           00049     CLRF INTCON
+001B   30C8           00050     MOVLW b'11001000'   ; Se habilitan interrupciones globales, de perifericos y por PORTB
+001C   048B           00051     IORWF INTCON,F
+                      00052     
+001D   1283 1303      00053     BANKSEL PORTD       ;Habilito el PORTD todo como salidas (para poner el led que indica que la alarma
+                             esta activada y el buzzer)
+001F   0188           00054     CLRF PORTD
+0020   1683 1303      00055     BANKSEL TRISD
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0022   0188           00056     CLRF TRISD          
+0023   1283 1303      00057     BANKSEL PORTE       ;Habilito el PORTE y RE0 para el boton de sensor de movimiento que activa la ala
+                            rma
+0025   0189           00058     CLRF PORTE
+0026   1683 1703      00059     BANKSEL ANSEL
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0028   0188           00060     CLRF ANSEL
+0029   1303           00061     BCF STATUS,RP1
+002A   1683 1303      00062     BANKSEL TRISE
+002C   3001           00063     MOVLW b'00000001'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+002D   0089           00064     MOVWF TRISE
+                      00065     
+002E                  00066 LOOP
+002E   0826           00067     MOVF DISPARADA,W
+002F   3C01           00068     SUBLW 0x01
+0030   1D03           00069     BTFSS STATUS,Z
+0031   2???           00070     GOTO CHEQUEAR_BOTON
+0032   1283 1303      00071     BANKSEL PORTD
+0034   1488           00072     BSF PORTD,RD1
+                      00073     
+0035   2???           00074     GOTO LOOP
+                      00075     
+0036                  00076 CHEQUEAR_BOTON
+0036   1283 1303      00077     BANKSEL PORTE
+0038   1809           00078     BTFSC PORTE,RE0
+0039   2???           00079     GOTO VERIFICAR_ACTIVACION
+003A   2???           00080     GOTO LOOP
+                      00081 
+003B                  00082 VERIFICAR_ACTIVACION
+                      00083     ; ¿La alarma está activada?
+003B   0825           00084     MOVF ACTIVADA,W
+003C   3C01           00085     SUBLW 0x01
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0039   0009           00091     RETFIE
-                      00092     
-003A                  00093 INT_TECLADO
-003A   1283 1303      00094     BANKSEL PORTB
-003C   0886           00095     MOVF PORTB,F
-003D   100B           00096     BCF INTCON,RBIF
-003E   118B           00097     BCF INTCON,RBIE
-003F   1283 1303      00098     BANKSEL TMR0
-0041   303C           00099     MOVLW d'60'
-0042   0081           00100     MOVWF TMR0
-0043   1683 1303      00101     BANKSEL OPTION_REG
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0045   1281           00102     BCF OPTION_REG,T0CS         ; Para iniciar funcionamiento del timer
-0046   1283 1303      00103     BANKSEL INTCON
-0048   110B           00104     BCF INTCON,T0IF
-0049   168B           00105     BSF INTCON,T0IE
-004A   0008           00106     RETURN
+003D   1D03           00086     BTFSS STATUS,Z
+003E   2???           00087     GOTO LOOP
+                      00088 
+                      00089     ; Activada y botón presionado ? disparar alarma
+003F   3001           00090     MOVLW 0x01
+0040   00A6           00091     MOVWF DISPARADA
+                      00092 
+0041   1488           00093     BSF PORTD,RD1        ; Encender buzzer
+0042   2???           00094     GOTO LOOP
+                      00095     
+0043                  00096 TABLA
+0043   0782           00097     ADDWF PCL,F
+0044   3486           00098     RETLW b'10000110'   ;1
+0045   34E6           00099     RETLW b'11100110'   ;4
+0046   3487           00100     RETLW b'10000111'   ;7
+0047   34F6           00101     RETLW b'11110110'   ;*
+                      00102     
+0048   34DB           00103     RETLW b'11011011'   ;2
+0049   34ED           00104     RETLW b'11101101'   ;5
+004A   34FF           00105     RETLW b'11111111'   ;8
+004B   34BF           00106     RETLW b'10111111'   ;0
                       00107     
-004B                  00108 INT_TMR0
-004B   1683 1303      00109     BANKSEL OPTION_REG
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-004D   1681           00110     BSF OPTION_REG,T0CS
-004E   1283 1303      00111     BANKSEL INTCON
-0050   110B           00112     BCF INTCON,T0IF
-0051   128B           00113     BCF INTCON,T0IE
-0052   2???           00114     CALL SCAN
-0053   1283 1303      00115     BANKSEL PORTB
-0055   0186           00116     CLRF PORTB
-0056   0886           00117     MOVF PORTB,F
-0057   1283 1303      00118     BANKSEL INTCON
-0059   100B           00119     BCF INTCON,RBIF
-005A   158B           00120     BSF INTCON,RBIE
-005B   0008           00121     RETURN
-                      00122     
-005C                  00123 SCAN
-005C   0820           00124     MOVF KEYNUM,W
-005D   00A2           00125     MOVWF AUX_KEYNUM
-005E   01A0           00126     CLRF KEYNUM
-005F   300E           00127     MOVLW b'00001110'
-0060   00A1           00128     MOVWF AUX_FILE
-0061                  00129 SCAN_NEXT
-0061   1283 1303      00130     BANKSEL PORTB
-0063   0821           00131     MOVF AUX_FILE,W
-0064   0086           00132     MOVWF PORTB
-0065   1E06           00133     BTFSS PORTB,RB4
-0066   2???           00134     GOTO SR_KEY
-0067   0AA0           00135     INCF KEYNUM,F
-                      00136     
-0068   1E86           00137     BTFSS PORTB,RB5
-0069   2???           00138     GOTO SR_KEY
-006A   0AA0           00139     INCF KEYNUM,F
-                      00140 
-006B   1F06           00141     BTFSS PORTB,RB6
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE  4
+004C   34CF           00108     RETLW b'11001111'   ;3
+004D   34FD           00109     RETLW b'11111101'   ;6
+004E   34E7           00110     RETLW b'11100111'   ;9
+004F   34F6           00111     RETLW b'11110110'   ;#
+                      00112     
+0050                  00113 ISR
+                      00114     ; Guardo el contexto
+0050   00A3           00115     MOVWF SALVAW
+0051   0E03           00116     SWAPF STATUS,W
+0052   00A4           00117     MOVWF SALVAS
+                      00118     
+0053   190B           00119     BTFSC INTCON,T0IF
+0054   2???           00120     CALL INT_TMR0
+                      00121     
+0055   180B           00122     BTFSC INTCON,RBIF
+0056   2???           00123     CALL INT_TECLADO
+                      00124     
+                      00125     ; Recupero el contexto
+0057   0E24           00126     SWAPF SALVAS,W
+0058   0083           00127     MOVWF STATUS
+0059   0EA3           00128     SWAPF SALVAW,F
+005A   0E23           00129     SWAPF SALVAW,W
+                      00130     
+005B   0009           00131     RETFIE
+                      00132     
+005C                  00133 INT_TECLADO
+005C   1283 1303      00134     BANKSEL PORTB
+005E   0886           00135     MOVF PORTB,F
+005F   100B           00136     BCF INTCON,RBIF
+0060   118B           00137     BCF INTCON,RBIE
+0061   1283 1303      00138     BANKSEL TMR0
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-006C   2???           00142     GOTO SR_KEY
-006D   0AA0           00143     INCF KEYNUM,F
-                      00144 
-006E   1F86           00145     BTFSS PORTB,RB7
-006F   2???           00146     GOTO SR_KEY
-0070   0AA0           00147     INCF KEYNUM,F
-                      00148     
-0071   1403           00149     BSF STATUS,C
-0072   0DA1           00150     RLF AUX_FILE,F
-0073   300C           00151     MOVLW 0x0C
-0074   0220           00152     SUBWF KEYNUM,W
-0075   1903           00153     BTFSC STATUS,Z
-0076   0008           00154     RETURN                  ;Llegó a 12, salgo
-0077   2???           00155     GOTO SCAN_NEXT          ;NO llegó a 12, busca proxima fila
-                      00156     
-0078                  00157 SR_KEY
-0078   0820           00158     MOVF KEYNUM,W
-0079   2???           00159     CALL TABLA
-007A   0087           00160     MOVWF PORTC
-                      00161     
-007B   0008           00162     RETURN
-                      00163     
-20F4 3FFF             00164     END
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE  5
+0063   303C           00139     MOVLW d'60'
+0064   0081           00140     MOVWF TMR0
+0065   1683 1303      00141     BANKSEL OPTION_REG
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0067   1281           00142     BCF OPTION_REG,T0CS         ; Para iniciar funcionamiento del timer
+0068   1283 1303      00143     BANKSEL INTCON
+006A   110B           00144     BCF INTCON,T0IF
+006B   168B           00145     BSF INTCON,T0IE
+006C   0008           00146     RETURN
+                      00147     
+006D                  00148 INT_TMR0
+006D   1683 1303      00149     BANKSEL OPTION_REG
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+006F   1681           00150     BSF OPTION_REG,T0CS
+0070   1283 1303      00151     BANKSEL INTCON
+0072   110B           00152     BCF INTCON,T0IF
+0073   128B           00153     BCF INTCON,T0IE
+0074   2???           00154     CALL SCAN
+0075   1283 1303      00155     BANKSEL PORTB
+0077   0186           00156     CLRF PORTB
+0078   0886           00157     MOVF PORTB,F
+0079   1283 1303      00158     BANKSEL INTCON
+007B   100B           00159     BCF INTCON,RBIF
+007C   158B           00160     BSF INTCON,RBIE
+007D   0008           00161     RETURN
+                      00162     
+007E                  00163 SCAN
+007E   0820           00164     MOVF KEYNUM,W
+007F   00A2           00165     MOVWF AUX_KEYNUM
+0080   01A0           00166     CLRF KEYNUM
+0081   300E           00167     MOVLW b'00001110'
+0082   00A1           00168     MOVWF AUX_FILE
+0083                  00169 SCAN_NEXT
+0083   1283 1303      00170     BANKSEL PORTB
+0085   0821           00171     MOVF AUX_FILE,W
+0086   0086           00172     MOVWF PORTB
+0087   1E06           00173     BTFSS PORTB,RB4
+0088   2???           00174     GOTO SR_KEY
+0089   0AA0           00175     INCF KEYNUM,F
+                      00176     
+008A   1E86           00177     BTFSS PORTB,RB5
+008B   2???           00178     GOTO SR_KEY
+008C   0AA0           00179     INCF KEYNUM,F
+                      00180 
+008D   1F06           00181     BTFSS PORTB,RB6
+008E   2???           00182     GOTO SR_KEY
+008F   0AA0           00183     INCF KEYNUM,F
+                      00184 
+0090   1F86           00185     BTFSS PORTB,RB7
+0091   2???           00186     GOTO SR_KEY
+0092   0AA0           00187     INCF KEYNUM,F
+                      00188     
+0093   1403           00189     BSF STATUS,C
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0094   0DA1           00190     RLF AUX_FILE,F
+0095   300C           00191     MOVLW 0x0C
+0096   0220           00192     SUBWF KEYNUM,W
+0097   1903           00193     BTFSC STATUS,Z
+0098   0008           00194     RETURN                  ;Llegó a 12, salgo
+0099   2???           00195     GOTO SCAN_NEXT          ;NO llegó a 12, busca proxima fila
+                      00196     
+009A                  00197 SR_KEY
+009A   0820           00198     MOVF KEYNUM,W
+009B   2???           00199     CALL TABLA
+009C   1283 1303      00200     BANKSEL PORTC
+009E   0087           00201     MOVWF PORTC
+                      00202     
+009F   0827           00203     MOVF SEQUENCE_POS,W
+00A0   0782           00204     ADDWF PCL,F
+00A1   2???           00205     GOTO POS0
+00A2   2???           00206     GOTO POS1
+00A3                  00207 POS0
+00A3   0820           00208     MOVF KEYNUM,W
+00A4   3C00           00209     SUBLW 0x00      ; ¿Tecla 1?
+00A5   1D03           00210     BTFSS STATUS,Z
+00A6   2???           00211     GOTO RESET_SEQ
+00A7   0AA7           00212     INCF SEQUENCE_POS,F
+00A8   0008           00213     RETURN
+00A9                  00214 POS1
+00A9   0820           00215     MOVF KEYNUM,W
+00AA   3C01           00216     SUBLW 0x01      ; ¿Tecla 4?
+00AB   1D03           00217     BTFSS STATUS,Z
+00AC   2???           00218     GOTO RESET_SEQ
+00AD   0AA7           00219     INCF SEQUENCE_POS,F
+00AE   2???           00220     GOTO ACTIVAR_ALARMA
+                      00221 
+00AF                  00222 RESET_SEQ
+00AF   01A7           00223     CLRF SEQUENCE_POS
+00B0   0008           00224     RETURN
+                      00225     
+00B1                  00226 ACTIVAR_ALARMA
+00B1   3001           00227     MOVLW 0x01
+Message[305]: Using default destination of 1 (file).
+00B2   02A5           00228     SUBWF ACTIVADA
+00B3   1903           00229     BTFSC STATUS,Z
+00B4   2???           00230     GOTO DESACTIVAR_ALARMA
+00B5   1283 1303      00231     BANKSEL PORTD
+00B7   1408           00232     BSF PORTD,RB0
+00B8   3001           00233     MOVLW 0x01
+00B9   00A5           00234     MOVWF ACTIVADA
+00BA   2???           00235     GOTO RESET_SEQ
+                      00236 
+00BB                  00237 DESACTIVAR_ALARMA
+00BB   1283 1303      00238     BANKSEL PORTD
+00BD   1008           00239     BCF PORTD,RD0
+00BE   1088           00240     BCF PORTD,RD1
+00BF   01A6           00241     CLRF DISPARADA
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00C0   01A5           00242     CLRF ACTIVADA
+00C1   0008           00243     RETURN
+                      00244     
+20F4 3FFF             00245     END
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE  7
 
 
 SYMBOL TABLE
@@ -215,6 +314,8 @@ ABDOVF                            00000007
 ACKDT                             00000005
 ACKEN                             00000004
 ACKSTAT                           00000006
+ACTIVADA                          00000025
+ACTIVAR_ALARMA                    000000B1
 ADCON0                            0000001F
 ADCON1                            0000009F
 ADCS0                             00000006
@@ -261,14 +362,14 @@ BRG2                              00000002
 BRG3                              00000003
 BRG4                              00000004
 BRG5                              00000005
-BRG6                              00000006
-BRG7                              00000007
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE  6
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE  8
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+BRG6                              00000006
+BRG7                              00000007
 BRG8                              00000000
 BRG9                              00000001
 BRGH                              00000002
@@ -320,14 +421,15 @@ CCPR1L                            00000015
 CCPR2                             0000001B
 CCPR2H                            0000001C
 CCPR2L                            0000001B
-CHS0                              00000002
-CHS1                              00000003
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE  7
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE  9
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CHEQUEAR_BOTON                    00000036
+CHS0                              00000002
+CHS1                              00000003
 CHS2                              00000004
 CHS3                              00000005
 CKE                               00000006
@@ -344,6 +446,8 @@ DC1B0                             00000004
 DC1B1                             00000005
 DC2B0                             00000004
 DC2B1                             00000005
+DESACTIVAR_ALARMA                 000000BB
+DISPARADA                         00000026
 D_A                               00000005
 D_NOT_A                           00000005
 ECCPAS                            0000009C
@@ -376,19 +480,19 @@ I2C_READ                          00000002
 I2C_START                         00000003
 I2C_STOP                          00000004
 INDF                              00000000
-INICIO                            00000005
-INTCON                            0000000B
-INTE                              00000004
-INTEDG                            00000006
-INTF                              00000001
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE  8
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE 10
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-INT_TECLADO                       0000003A
-INT_TMR0                          0000004B
+INICIO                            00000005
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+INT_TECLADO                       0000005C
+INT_TMR0                          0000006D
 IOCB                              00000096
 IOCB0                             00000000
 IOCB1                             00000001
@@ -402,9 +506,9 @@ IRCF0                             00000004
 IRCF1                             00000005
 IRCF2                             00000006
 IRP                               00000007
-ISR                               0000002E
+ISR                               00000050
 KEYNUM                            00000020
-LOOP                              0000001D
+LOOP                              0000002E
 LTS                               00000001
 MC1OUT                            00000007
 MC2OUT                            00000006
@@ -435,17 +539,17 @@ OERR                              00000001
 OPTION_REG                        00000081
 OSCCON                            0000008F
 OSCTUNE                           00000090
-OSFIE                             00000007
-OSFIF                             00000007
-OSTS                              00000003
-P                                 00000004
-P1M0                              00000006
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE  9
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE 11
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+OSFIE                             00000007
+OSFIF                             00000007
+OSTS                              00000003
+P                                 00000004
+P1M0                              00000006
 P1M1                              00000007
 PCL                               00000002
 PCLATH                            0000000A
@@ -468,6 +572,8 @@ PORTB                             00000006
 PORTC                             00000007
 PORTD                             00000008
 PORTE                             00000009
+POS0                              000000A3
+POS1                              000000A9
 PR2                               00000092
 PRSEN                             00000007
 PS0                               00000000
@@ -492,6 +598,12 @@ RA5                               00000005
 RA6                               00000006
 RA7                               00000007
 RB0                               00000000
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 RB1                               00000001
 RB2                               00000002
 RB3                               00000003
@@ -499,12 +611,6 @@ RB4                               00000004
 RB5                               00000005
 RB6                               00000006
 RB7                               00000007
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE 10
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 RBIE                              00000003
 RBIF                              00000000
 RC0                               00000000
@@ -538,6 +644,7 @@ RE1                               00000001
 RE2                               00000002
 RE3                               00000003
 READ_WRITE                        00000002
+RESET_SEQ                         000000AF
 RP0                               00000005
 RP1                               00000006
 RSEN                              00000001
@@ -549,27 +656,28 @@ S                                 00000003
 SALVAS                            00000024
 SALVAW                            00000023
 SBOREN                            00000004
-SCAN                              0000005C
-SCAN_NEXT                         00000061
-SCKP                              00000004
-SCS                               00000000
-SEN                               00000000
-SENDB                             00000003
-SMP                               00000007
-SPBRG                             00000099
-SPBRGH                            0000009A
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE 11
+SCAN                              0000007E
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE 13
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+SCAN_NEXT                         00000083
+SCKP                              00000004
+SCS                               00000000
+SEN                               00000000
+SENDB                             00000003
+SEQUENCE_POS                      00000027
+SMP                               00000007
+SPBRG                             00000099
+SPBRGH                            0000009A
 SPEN                              00000007
 SR0                               00000006
 SR1                               00000007
 SRCON                             00000185
 SREN                              00000005
-SR_KEY                            00000078
+SR_KEY                            0000009A
 SSPADD                            00000093
 SSPBUF                            00000013
 SSPCON                            00000014
@@ -608,7 +716,13 @@ T1SYNC                            00000002
 T2CKPS0                           00000000
 T2CKPS1                           00000001
 T2CON                             00000012
-TABLA                             00000021
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TABLA                             00000043
 TMR0                              00000001
 TMR0IE                            00000005
 TMR0IF                            00000002
@@ -617,12 +731,6 @@ TMR1CS                            00000001
 TMR1GE                            00000006
 TMR1H                             0000000F
 TMR1IE                            00000000
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE 12
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 TMR1IF                            00000000
 TMR1L                             0000000E
 TMR1ON                            00000000
@@ -667,6 +775,12 @@ TRISD1                            00000001
 TRISD2                            00000002
 TRISD3                            00000003
 TRISD4                            00000004
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 TRISD5                            00000005
 TRISD6                            00000006
 TRISD7                            00000007
@@ -676,12 +790,6 @@ TRISE1                            00000001
 TRISE2                            00000002
 TRISE3                            00000003
 TRMT                              00000001
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE 13
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 TUN0                              00000000
 TUN1                              00000001
 TUN2                              00000002
@@ -702,6 +810,7 @@ ULPWUIE                           00000002
 ULPWUIF                           00000002
 VCFG0                             00000004
 VCFG1                             00000005
+VERIFICAR_ACTIVACION              0000003B
 VR0                               00000000
 VR1                               00000001
 VR2                               00000002
@@ -725,6 +834,12 @@ WPUB2                             00000002
 WPUB3                             00000003
 WPUB4                             00000004
 WPUB5                             00000005
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE 16
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 WPUB6                             00000006
 WPUB7                             00000007
 WR                                00000001
@@ -735,12 +850,6 @@ Z                                 00000002
 _BOR21V                           00003EFF
 _BOR40V                           00003FFF
 _BOR4V_BOR21V                     00003EFF
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE 14
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 _BOR4V_BOR40V                     00003FFF
 _BOREN_NSLEEP                     00003EFF
 _BOREN_OFF                        00003CFF
@@ -784,6 +893,12 @@ _IESO_ON                          00003FFF
 _INTOSC                           00003FFD
 _INTOSCIO                         00003FFC
 _INTRC_OSC_CLKOUT                 00003FFD
+MPASM 5.87                          MAIN.ASM   6-7-2025  13:22:44         PAGE 17
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 _INTRC_OSC_NOCLKOUT               00003FFC
 _LP_OSC                           00003FF8
 _LVP_OFF                          00002FFF
@@ -794,12 +909,6 @@ _PWRTE_OFF                        00003FFF
 _PWRTE_ON                         00003FEF
 _WDTE_OFF                         00003FF7
 _WDTE_ON                          00003FFF
-MPASM 5.87                          MAIN.ASM   6-6-2025  21:47:08         PAGE 15
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 _WDT_OFF                          00003FF7
 _WDT_ON                           00003FFF
 _WRT_1FOURTH                      00003BFF
@@ -811,6 +920,6 @@ __16F887                          00000001
 
 Errors   :     0
 Warnings :     0 reported,     0 suppressed
-Messages :     7 reported,     0 suppressed
+Messages :    11 reported,     0 suppressed
 
 

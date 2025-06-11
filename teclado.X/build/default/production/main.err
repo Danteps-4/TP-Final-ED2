@@ -1,7 +1,11 @@
-Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 30 : Register in operand not in bank 0.  Ensure that bank bits are correct.
 Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 33 : Register in operand not in bank 0.  Ensure that bank bits are correct.
 Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 36 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 37 : Register in operand not in bank 0.  Ensure that bank bits are correct.
 Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 39 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 102 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 110 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 40 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 42 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 56 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 60 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 64 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 142 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 150 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[305] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 228 : Using default destination of 1 (file).

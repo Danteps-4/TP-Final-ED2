@@ -1,7 +1,11 @@
-Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 30 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 33 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 36 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 37 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 39 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 102 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 110 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 45 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 48 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 51 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 52 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 54 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 68 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 72 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 76 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 170 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 178 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[305] C:\USERS\USUARIO\DESKTOP\MPLABTEST\TECLADO.X\MAIN.ASM 285 : Using default destination of 1 (file).
