@@ -15,6 +15,7 @@ AUX_FILE EQU 0x21
 AUX_KEYNUM EQU 0x22
 SALVAW EQU 0x23
 SALVAS EQU 0x24
+ACTIVADA EQU 0x25
 
 ;-------------------------------
 ; PROGRAMA PRINCIPAL
@@ -41,11 +42,11 @@ INICIO
     CLRF PORTB
     MOVF PORTB,F
     BANKSEL PORTD
-    MOVLW b'11111111'
+    MOVLW b'11111111'	    ; Al principio, prendo todos los segmentos del display
     MOVWF PORTD
     BANKSEL TRISD
     CLRF TRISD
-    BANKSEL PORTE
+    BANKSEL PORTE	    ; Habilito el PORTE como salidas para el ?multiplexado?
     CLRF PORTE
     BSF PORTE,0
     BANKSEL ANSEL
@@ -53,11 +54,19 @@ INICIO
     BCF STATUS,RP1
     BANKSEL TRISE
     CLRF TRISE
+    BANKSEL PORTA	    ; Habilito el PORTA como salidas para led activada, buzzer, etc
+    CLRF PORTA
+    BANKSEL ANSEL
+    CLRF ANSEL
+    BANKSEL TRISA
+    CLRF TRISA
     
     BANKSEL INTCON
     CLRF INTCON
     MOVLW b'11001000'	; Se habilitan interrupciones globales, de perifericos y por PORTB
     IORWF INTCON,F
+    
+    CLRF ACTIVADA
     
 LOOP
     NOP
@@ -176,6 +185,29 @@ SR_KEY
     CALL TABLA
     MOVWF PORTD
     
+    MOVF KEYNUM,W
+    SUBLW d'1'		    ; Se presiono la tecla "4"????
+    BTFSC STATUS,Z
+    GOTO CHEQUEO_ALARMA	    ; SI se presiono, voy a chequear la alarma
+    RETURN		    ; NO se presiono, vuelvo
+CHEQUEO_ALARMA
+    MOVF ACTIVADA,W	    ; Chequeo si la alarma esta activada
+    SUBLW d'1'		    ; Le resto 1 a ACTIVADA
+    BTFSS STATUS,Z
+    GOTO ACTIVAR_ALARMA
+    GOTO DESACTIVAR_ALARMA
+    
+ACTIVAR_ALARMA
+    MOVLW 0x01
+    MOVWF ACTIVADA	    ; Muevo un "1" a ACTIVADA para decir que la alarma esta activada (fase 1 de ACTIVADA - para realizar la cuenta regresiva mas adelante)
+    BANKSEL PORTA
+    BSF PORTA,RA0	    ; Prendo el led conectado a RA0
+    RETURN
+    
+DESACTIVAR_ALARMA
+    CLRF ACTIVADA	    ; Limpio ACTIVADA
+    BANKSEL PORTA
+    BCF PORTA,RA0	    ; Apago el led conectado a RA0
     RETURN
     
     END
