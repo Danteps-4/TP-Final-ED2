@@ -1,5 +1,5 @@
 MPLINK 5.09, LINKER
-Linker Map File - Created Sat Jun 07 13:22:45 2025
+Linker Map File - Created Thu Jun 12 21:59:04 2025
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
@@ -7,7 +7,7 @@ Linker Map File - Created Sat Jun 07 13:22:45 2025
                    .org_0       code   0x000000    program   0x000002
                    .cinit    romdata   0x000001    program   0x000004
                    .org_1       code   0x000004    program   0x000002
-                   .org_2       code   0x000005    program   0x00017a
+                   .org_2       code   0x000005    program   0x000118
 .config_2007_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x002007    program   0x000002
 .config_2008_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x002008    program   0x000002
 
@@ -17,31 +17,24 @@ Linker Map File - Created Sat Jun 07 13:22:45 2025
                                Start         End      
                            ---------   ---------      
                             0x000000    0x000002      
-                            0x000004    0x0000c1      
+                            0x000004    0x000090      
                             0x002007    0x002008      
-            195 out of 8455 program addresses used, program memory utilization is 2%
+            146 out of 8455 program addresses used, program memory utilization is 1%
 
 
 
                               Symbols - Sorted by Name
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-           ACTIVAR_ALARMA   0x0000b1    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-           CHEQUEAR_BOTON   0x000036    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-        DESACTIVAR_ALARMA   0x0000bb    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
                    INICIO   0x000005    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-              INT_TECLADO   0x00005c    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                 INT_TMR0   0x00006d    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                      ISR   0x000050    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+              INT_TECLADO   0x00004f    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+                 INT_TMR0   0x000060    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+                      ISR   0x000043    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
                      LOOP   0x00002e    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                     POS0   0x0000a3    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                     POS1   0x0000a9    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                RESET_SEQ   0x0000af    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                     SCAN   0x00007e    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                SCAN_NEXT   0x000083    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                   SR_KEY   0x00009a    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                    TABLA   0x000043    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-     VERIFICAR_ACTIVACION   0x00003b    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+                     SCAN   0x000071    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+                SCAN_NEXT   0x000076    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+                   SR_KEY   0x00008d    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+                    TABLA   0x000032    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
 
 
 
@@ -50,19 +43,12 @@ Linker Map File - Created Sat Jun 07 13:22:45 2025
                 ---------  ---------  ---------  --------- ---------                
                    INICIO   0x000005    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
                      LOOP   0x00002e    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-           CHEQUEAR_BOTON   0x000036    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-     VERIFICAR_ACTIVACION   0x00003b    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                    TABLA   0x000043    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                      ISR   0x000050    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-              INT_TECLADO   0x00005c    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                 INT_TMR0   0x00006d    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                     SCAN   0x00007e    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                SCAN_NEXT   0x000083    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                   SR_KEY   0x00009a    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                     POS0   0x0000a3    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                     POS1   0x0000a9    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-                RESET_SEQ   0x0000af    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-           ACTIVAR_ALARMA   0x0000b1    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
-        DESACTIVAR_ALARMA   0x0000bb    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+                    TABLA   0x000032    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+                      ISR   0x000043    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+              INT_TECLADO   0x00004f    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+                 INT_TMR0   0x000060    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+                     SCAN   0x000071    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+                SCAN_NEXT   0x000076    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
+                   SR_KEY   0x00008d    program     static C:\Users\Usuario\Desktop\mplabtest\teclado.X\main.asm
 
 
