@@ -25,20 +25,20 @@ INICIO
     MOVLW b'10010000'
     MOVWF RCSTA
     
-    BANKSEL TRISB
-    CLRF TRISB
-    BANKSEL PORTB
-    CLRF PORTB
+    BANKSEL PORTA
+    CLRF PORTA
+    BANKSEL ANSEL
+    CLRF ANSEL
+    BANKSEL TRISA
+    CLRF TRISA
     
 MAIN
     BANKSEL PIR1
     BTFSS PIR1,RCIF	    ;Se chequea si llego la informacion completa
     GOTO MAIN	
     BANKSEL RCREG
-    MOVF RCREG,W	    ;Se muestra la informacion por el PORTB
-    MOVWF PORTB
+    MOVF RCREG,W	    ;Se muestra la informacion por el PORTA
+    MOVWF PORTA
     GOTO MAIN
     
     END
-    
-

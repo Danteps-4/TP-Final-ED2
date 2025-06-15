@@ -1,4 +1,4 @@
-MPASM 5.87                          MAIN.ASM   6-11-2025  0:33:06         PAGE  1
+MPASM 5.87                          MAIN.ASM   6-14-2025  13:12:11         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -45,29 +45,32 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 000F   3090           00025     MOVLW b'10010000'
 0010   0098           00026     MOVWF RCSTA
                       00027     
-0011   1683 1303      00028     BANKSEL TRISB
+0011   1283 1303      00028     BANKSEL PORTA
+0013   0185           00029     CLRF PORTA
+0014   1683 1703      00030     BANKSEL ANSEL
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0013   0186           00029     CLRF TRISB
-0014   1283 1303      00030     BANKSEL PORTB
-0016   0186           00031     CLRF PORTB
-                      00032     
-0017                  00033 MAIN
-0017   1283 1303      00034     BANKSEL PIR1
-0019   1E8C           00035     BTFSS PIR1,RCIF         ;Se chequea si llego la informacion completa
-001A   2???           00036     GOTO MAIN   
-001B   1283 1303      00037     BANKSEL RCREG
-001D   081A           00038     MOVF RCREG,W            ;Se muestra la informacion por el PORTB
-MPASM 5.87                          MAIN.ASM   6-11-2025  0:33:06         PAGE  2
+0016   0188           00031     CLRF ANSEL
+0017   1683 1303      00032     BANKSEL TRISA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0019   0185           00033     CLRF TRISA
+                      00034     
+001A                  00035 MAIN
+001A   1283 1303      00036     BANKSEL PIR1
+001C   1E8C           00037     BTFSS PIR1,RCIF         ;Se chequea si llego la informacion completa
+MPASM 5.87                          MAIN.ASM   6-14-2025  13:12:11         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-001E   0086           00039     MOVWF PORTB
-001F   2???           00040     GOTO MAIN
-                      00041     
-20F4 3FFF             00042     END
-MPASM 5.87                          MAIN.ASM   6-11-2025  0:33:06         PAGE  3
+001D   2???           00038     GOTO MAIN   
+001E   1283 1303      00039     BANKSEL RCREG
+0020   081A           00040     MOVF RCREG,W            ;Se muestra la informacion por el PORTB
+0021   0085           00041     MOVWF PORTA
+0022   2???           00042     GOTO MAIN
+                      00043     
+20F4 3FFF             00044     END
+MPASM 5.87                          MAIN.ASM   6-14-2025  13:12:11         PAGE  3
 
 
 SYMBOL TABLE
@@ -126,7 +129,7 @@ BRG6                              00000006
 BRG7                              00000007
 BRG8                              00000000
 BRG9                              00000001
-MPASM 5.87                          MAIN.ASM   6-11-2025  0:33:06         PAGE  4
+MPASM 5.87                          MAIN.ASM   6-14-2025  13:12:11         PAGE  4
 
 
 SYMBOL TABLE
@@ -185,7 +188,7 @@ CHS0                              00000002
 CHS1                              00000003
 CHS2                              00000004
 CHS3                              00000005
-MPASM 5.87                          MAIN.ASM   6-11-2025  0:33:06         PAGE  5
+MPASM 5.87                          MAIN.ASM   6-14-2025  13:12:11         PAGE  5
 
 
 SYMBOL TABLE
@@ -244,7 +247,7 @@ INTEDG                            00000006
 INTF                              00000001
 IOCB                              00000096
 IOCB0                             00000000
-MPASM 5.87                          MAIN.ASM   6-11-2025  0:33:06         PAGE  6
+MPASM 5.87                          MAIN.ASM   6-14-2025  13:12:11         PAGE  6
 
 
 SYMBOL TABLE
@@ -262,7 +265,7 @@ IRCF1                             00000005
 IRCF2                             00000006
 IRP                               00000007
 LTS                               00000001
-MAIN                              00000017
+MAIN                              0000001A
 MC1OUT                            00000007
 MC2OUT                            00000006
 MSK                               00000093
@@ -303,7 +306,7 @@ PCLATH                            0000000A
 PCON                              0000008E
 PDC0                              00000000
 PDC1                              00000001
-MPASM 5.87                          MAIN.ASM   6-11-2025  0:33:06         PAGE  7
+MPASM 5.87                          MAIN.ASM   6-14-2025  13:12:11         PAGE  7
 
 
 SYMBOL TABLE
@@ -362,7 +365,7 @@ RC0                               00000000
 RC1                               00000001
 RC2                               00000002
 RC3                               00000003
-MPASM 5.87                          MAIN.ASM   6-11-2025  0:33:06         PAGE  8
+MPASM 5.87                          MAIN.ASM   6-14-2025  13:12:11         PAGE  8
 
 
 SYMBOL TABLE
@@ -421,7 +424,7 @@ SSPBUF                            00000013
 SSPCON                            00000014
 SSPCON2                           00000091
 SSPEN                             00000005
-MPASM 5.87                          MAIN.ASM   6-11-2025  0:33:06         PAGE  9
+MPASM 5.87                          MAIN.ASM   6-14-2025  13:12:11         PAGE  9
 
 
 SYMBOL TABLE
@@ -480,7 +483,7 @@ TOUTPS1                           00000004
 TOUTPS2                           00000005
 TOUTPS3                           00000006
 TRISA                             00000085
-MPASM 5.87                          MAIN.ASM   6-11-2025  0:33:06         PAGE 10
+MPASM 5.87                          MAIN.ASM   6-14-2025  13:12:11         PAGE 10
 
 
 SYMBOL TABLE
@@ -539,7 +542,7 @@ TXD8                              00000000
 TXEN                              00000005
 TXIE                              00000004
 TXIF                              00000004
-MPASM 5.87                          MAIN.ASM   6-11-2025  0:33:06         PAGE 11
+MPASM 5.87                          MAIN.ASM   6-14-2025  13:12:11         PAGE 11
 
 
 SYMBOL TABLE
@@ -598,7 +601,7 @@ _BOR_SBODEN                       00003DFF
 _CONFIG1                          00002007
 _CONFIG2                          00002008
 _CPD_OFF                          00003FFF
-MPASM 5.87                          MAIN.ASM   6-11-2025  0:33:06         PAGE 12
+MPASM 5.87                          MAIN.ASM   6-14-2025  13:12:11         PAGE 12
 
 
 SYMBOL TABLE
@@ -654,7 +657,7 @@ _WRT_OFF                          00003FFF
 _XT_OSC                           00003FF9
 __16F887                          00000001
 
-MPASM 5.87                          MAIN.ASM   6-11-2025  0:33:06         PAGE 13
+MPASM 5.87                          MAIN.ASM   6-14-2025  13:12:11         PAGE 13
 
 
 
@@ -662,6 +665,6 @@ __16F887                          00000001
 
 Errors   :     0
 Warnings :     0 reported,     0 suppressed
-Messages :     3 reported,     0 suppressed
+Messages :     4 reported,     0 suppressed
 
 

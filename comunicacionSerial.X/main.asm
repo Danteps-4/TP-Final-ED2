@@ -29,8 +29,8 @@ INICIO
     MOVLW b'10000000'
     MOVWF RCSTA
     
-    MOVLW 0x41
-    MOVWF VALOR		;Se carga VALOR con el char "A" en ASCII
+    MOVLW b'01000001'
+    MOVWF VALOR		;Se carga VALOR con el char "1" en ASCII
     
 MAIN
     BANKSEL TXREG

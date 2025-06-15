@@ -1,4 +1,4 @@
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE  1
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,7 +57,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 0005                  00040 INICIO
 0005   1683 1703      00041     BANKSEL ANSELH
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE  2
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -116,7 +116,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 0038   01A6           00081     CLRF ACTIVANDOSE
 0039   01A8           00082     CLRF CONT1
 003A   01B3           00083     CLRF IGUALDADES_CONTRASENA
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE  3
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -175,7 +175,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 005F   34DB           00131     RETLW b'11011011'   ;2
 0060   34CF           00132     RETLW b'11001111'   ;3
 0061   34E6           00133     RETLW b'11100110'   ;4
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE  4
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -234,7 +234,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 0084                  00182 INT_TECLADO
 0084   1283 1303      00183     BANKSEL PORTB
 0086   0886           00184     MOVF PORTB,F
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE  5
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE  5
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -293,7 +293,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
                       00233 
 00B8   1F86           00234     BTFSS PORTB,RB7
 00B9   2???           00235     GOTO SR_KEY
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE  6
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE  6
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -352,7 +352,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00285     
 00DF                  00286 CHEQUEO_ALARMA
 00DF   0825           00287     MOVF ACTIVADA,W                 ; Chequeo si la alarma esta activada
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE  7
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE  7
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -411,7 +411,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 0105                  00335 ESPERA
 0105   1283 1303      00336     BANKSEL INTCON
 0107   1D0B           00337     BTFSS INTCON,T0IF
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE  8
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE  8
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -470,7 +470,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 0131   0830           00387     MOVF TEMPORAL,W
 0132   0080           00388     MOVWF INDF
                       00389     
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE  9
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE  9
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -492,7 +492,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 013D   0008           00402     RETURN
                       00403     
 20F4 3FFF             00404     END
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE 10
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE 10
 
 
 SYMBOL TABLE
@@ -551,7 +551,7 @@ BRG15                             00000007
 BRG16                             00000003
 BRG2                              00000002
 BRG3                              00000003
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE 11
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE 11
 
 
 SYMBOL TABLE
@@ -610,7 +610,7 @@ CCP2Y                             00000004
 CCPR1                             00000015
 CCPR1H                            00000016
 CCPR1L                            00000015
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE 12
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE 12
 
 
 SYMBOL TABLE
@@ -669,7 +669,7 @@ ESPERA_EXTERIOR                   00000101
 F                                 00000001
 FERR                              00000002
 FSR                               00000004
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE 13
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE 13
 
 
 SYMBOL TABLE
@@ -728,7 +728,7 @@ NOT_A                             00000005
 NOT_ADDRESS                       00000005
 NOT_BO                            00000000
 NOT_BOR                           00000000
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE 14
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE 14
 
 
 SYMBOL TABLE
@@ -787,7 +787,7 @@ PSSAC1                            00000003
 PSSBD0                            00000000
 PSSBD1                            00000001
 PSTRCON                           0000009D
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE 15
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE 15
 
 
 SYMBOL TABLE
@@ -846,7 +846,7 @@ RE1                               00000001
 RE2                               00000002
 RE3                               00000003
 READ_WRITE                        00000002
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE 16
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE 16
 
 
 SYMBOL TABLE
@@ -905,7 +905,7 @@ T0IE                              00000005
 T0IF                              00000002
 T0SE                              00000004
 T1CKPS0                           00000004
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE 17
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE 17
 
 
 SYMBOL TABLE
@@ -964,7 +964,7 @@ TRISB7                            00000007
 TRISC                             00000087
 TRISC0                            00000000
 TRISC1                            00000001
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE 18
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE 18
 
 
 SYMBOL TABLE
@@ -1023,7 +1023,7 @@ VROE                              00000006
 VRR                               00000005
 VRSS                              00000004
 W                                 00000000
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE 19
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE 19
 
 
 SYMBOL TABLE
@@ -1082,7 +1082,7 @@ _FOSC_EXTRC_CLKOUT                00003FFF
 _FOSC_EXTRC_NOCLKOUT              00003FFE
 _FOSC_HS                          00003FFA
 _FOSC_INTRC_CLKOUT                00003FFD
-MPASM 5.87                          MAIN.ASM   6-15-2025  1:08:54         PAGE 20
+MPASM 5.87                          MAIN.ASM   6-15-2025  1:05:23         PAGE 20
 
 
 SYMBOL TABLE
@@ -1119,6 +1119,8 @@ _WRT_HALF                         000039FF
 _WRT_OFF                          00003FFF
 _XT_OSC                           00003FF9
 __16F887                          00000001
+__DEBUG                           
+__MPLAB_DEBUGGER_SIMULATOR        1
 
 Errors   :     0
 Warnings :     0 reported,     0 suppressed
