@@ -1,5 +1,5 @@
 ;-------------------------------
-; CONFIGURACIÓN
+; CONFIGURACI?N
 ;-------------------------------
     LIST P=16F887
     #include "p16f887.inc"
@@ -16,17 +16,19 @@ AUX_KEYNUM EQU 0x22
 SALVAW EQU 0x23
 SALVAS EQU 0x24
 ACTIVADA EQU 0x25
-ACTIVANDOSE EQU 0x26
-CUENTA_REGRESIVA EQU 0x27
-
-CONT1 EQU 0x28	    ; Los contadores para el delay de 1 seg de la cuenta regresiva
  
-;Variables para las contraseñas
+;Variables para las contrase?as
 TEMPORAL EQU 0x30
 VALOR_NUEVO EQU 0x31
 CARACTERES_INGRESADOS EQU 0x32
 IGUALDADES_CONTRASENA EQU 0x33
 CONTRASENA EQU 0x34
+CONTRASENA1 EQU 0x35
+ 
+UNIDADES EQU 0x40
+DECENAS EQU 0x41
+CONT1 EQU 0x42
+AUX1 EQU 0x43
 
 ;-------------------------------
 ; PROGRAMA PRINCIPAL
@@ -78,7 +80,6 @@ INICIO
     IORWF INTCON,F
     
     CLRF ACTIVADA
-    CLRF ACTIVANDOSE
     CLRF CONT1
     CLRF IGUALDADES_CONTRASENA
     
@@ -240,8 +241,8 @@ SCAN_NEXT
     MOVLW d'16'
     SUBWF KEYNUM,W
     BTFSC STATUS,Z
-    RETURN			    ;SI llegó a 16, salgo
-    GOTO SCAN_NEXT		    ;NO llegó a 16, busca proxima fila
+    RETURN			    ;SI lleg? a 16, salgo
+    GOTO SCAN_NEXT		    ;NO lleg? a 16, busca proxima fila
     
 SR_KEY
     MOVF KEYNUM,W
@@ -291,36 +292,83 @@ CHEQUEO_ALARMA
     GOTO DESACTIVAR_ALARMA
     
 ACTIVAR_ALARMA
-    MOVLW 0x01
-    MOVWF ACTIVANDOSE		    ; Pongo un "1" en ACTIVANDOSE para decir que estoy en la cuenta regresiva
+    ; Cargo la cuenta regresiva
+    BANKSEL UNIDADES
+    MOVLW d'9'
+    MOVWF UNIDADES
+    MOVLW d'2'
+    MOVWF DECENAS
+
+CUENTA_REGRESIVA
+    MOVLW d'54'
+    MOVWF AUX1
     
-    MOVLW 0x09
-    MOVWF CUENTA_REGRESIVA	    ; Cargo CUENTA_REGRESIVA con el numero 9 para hacer la cuenta regresiva
- 
 OTRA_CUENTA_REGRESIVA
-    MOVF CUENTA_REGRESIVA,W
-    CALL DISPLAY_7SEGMENTOS
-    MOVWF PORTD		    ; Lo muestro en el display
+    CALL MOSTRAR_DISPLAY
+    DECFSZ AUX1,F
+    GOTO OTRA_CUENTA_REGRESIVA
     
-    CALL DELAY_1SEG	    ; LLamo a un delay de 1 seg
+    MOVF UNIDADES,W
+    SUBLW 0x00
+    BTFSS STATUS,Z
+    GOTO DECREMENTAR_UNIDADES
     
-    DECFSZ CUENTA_REGRESIVA,F
-    GOTO OTRA_CUENTA_REGRESIVA	; Si no es 0, vuelvo a contar
+    ; Si UNIDADES=0, verificar DECENAS
+    MOVF DECENAS,W
+    SUBLW 0x00
+    BTFSS STATUS,Z
+    GOTO CARGAR_UNIDADES
     
     BANKSEL PORTD	    ; Si SI es 0
     CLRF PORTD		    ; Limpio el PORTD indicando que se activo
-    
-    CLRF ACTIVANDOSE	    ; Limpio la variable ACTIVANDOSE
-    
     MOVLW 0x01
     MOVWF ACTIVADA	    ; Muevo un "1" a ACTIVADA para decir que la alarma esta activada
     BANKSEL PORTA
     BSF PORTA,RA0	    ; Prendo el led conectado a RA0
+    BANKSEL PORTE
+    BSF PORTE,RE0
     RETURN
 
-DELAY_1SEG
+MOSTRAR_DISPLAY
+    ; Mostrar UNIDADES
+    BANKSEL PORTE
+    BSF PORTE,RE0
+    BANKSEL UNIDADES
+    MOVF UNIDADES,W
+    CALL DISPLAY_7SEGMENTOS
+    MOVWF PORTD
+    CALL DELAY_10MS
+    BANKSEL PORTE
+    BCF PORTE,RE0
+    
+    ; Mostrar DECENAS
+    BANKSEL PORTE
+    BSF PORTE,RE1
+    BANKSEL DECENAS
+    MOVF DECENAS,W
+    CALL DISPLAY_7SEGMENTOS
+    MOVWF PORTD
+    CALL DELAY_10MS
+    BANKSEL PORTE
+    BCF PORTE,RE1
+    
+    RETURN
+    
+DECREMENTAR_UNIDADES
+    BANKSEL UNIDADES
+    DECF UNIDADES,F
+    GOTO CUENTA_REGRESIVA
+    
+CARGAR_UNIDADES
+    BANKSEL UNIDADES
+    MOVLW d'9'
+    MOVWF UNIDADES
+    DECF DECENAS,F
+    GOTO CUENTA_REGRESIVA
+
+DELAY_10MS
     ; Configuraciones del delay
-    MOVLW d'20'
+    MOVLW d'1'
     MOVWF CONT1
     BANKSEL OPTION_REG
     BCF OPTION_REG,T0CS
@@ -330,7 +378,7 @@ DELAY_1SEG
     
 ESPERA_EXTERIOR    
     BANKSEL TMR0
-    MOVLW d'60'
+    MOVLW d'220'
     MOVWF TMR0
 ESPERA
     BANKSEL INTCON
@@ -371,7 +419,7 @@ ESPERA_COMUNICACION
     BTFSS PIR1,RCIF		    ;Se chequea si llego la informacion completa
     GOTO ESPERA_COMUNICACION	    ;Vuelve al bucle, esperando que llegue todo
     
-    ; Llegó toda la informacion
+    ; Lleg? toda la informacion
     BANKSEL RCREG
     MOVF RCREG,W		    ; Se captura la informacion
     MOVWF TEMPORAL
@@ -390,7 +438,7 @@ ESPERA_COMUNICACION
     CALL DISPLAY_7SEGMENTOS
     MOVWF PORTD			    ; Se muestra en el display
     
-    INCF CARACTERES_INGRESADOS,F    ; Incremento el valor de caracteres ingresados (para probar solo voy a usar contraseñas de 2 digitos)
+    INCF CARACTERES_INGRESADOS,F    ; Incremento el valor de caracteres ingresados (para probar solo voy a usar contrase?as de 2 digitos)
     MOVF CARACTERES_INGRESADOS,W
     SUBLW d'2'			    
     BTFSS STATUS,Z		    ; Pregunto si los caracteres ingresados son 2
