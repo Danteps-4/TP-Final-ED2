@@ -1,3 +1,5 @@
+Codigo de EEPROM actualizadisimoooooooo
+
 ;-------------------------------
 ; CONFIGURACI?N
 ;-------------------------------
@@ -24,9 +26,6 @@ CARACTERES_INGRESADOS EQU 0x32
 IGUALDADES_CONTRASENA EQU 0x33
 CONTRASENA EQU 0x34
 VALOR_NUEVO_2 EQU 0X35
-Delay1 EQU 0x36
-Delay2 EQU 0x37
-Delay3 EQU 0x38
  
 UNIDADES EQU 0x40
 DECENAS EQU 0x41
@@ -79,7 +78,6 @@ INICIO
     
     BANKSEL INTCON
     CLRF INTCON
-    ;GIE-PEIE-T0IE-INTE-RBIE-T0IF-INTF-RBIF
     MOVLW b'11001000'	    ; Se habilitan interrupciones globales, de perifericos y por PORTB
     IORWF INTCON,F
     
@@ -87,22 +85,12 @@ INICIO
     CLRF CONT1
     CLRF IGUALDADES_CONTRASENA
     
-    ; Desactivar módulo USART
-    BANKSEL TXSTA
-    BCF TXSTA, TXEN    ; Apaga la transmisión
-    BANKSEL RCSTA
-    BCF RCSTA, SPEN    ; Apaga el puerto serie (TX y RX)
-        
-    CALL Delay500ms
-    BANKSEL PORTA
-    BSF PORTA,RA3
     ; ----CONFIGURACION PARA RECIBIR EN EL PIC POR COMUNICACION SERIE----
     ; Configure SPBRG for desired baud rate
     BANKSEL SPBRG
     MOVLW d'25'
     MOVWF SPBRG
-    ; Configure TXSTA - TXEN=1 (transmision activada) , SYNC=0 (asincrono) , BRGH=1 (high transmision baud rate)
-    ; CSRC-TX9-TXEN-SYNC-SENDB-BRGH-TRMT-TX9D
+    ; Configure TXSTA - TXEN=1 (transmision activada) , SYNC=1 (asincrono) , BRGH=1 (high transmision baud rate)
     BANKSEL TXSTA
     MOVLW b'00100100'
     MOVWF TXSTA
@@ -111,19 +99,10 @@ INICIO
     MOVLW b'10010000'
     MOVWF RCSTA
     
-    BANKSEL PIE1
-    ;ADIE RCIE TXIE SSPIE CCP1IE TMR2IE TMR1IE
-    MOVLW b'00100000'
-    MOVWF PIE1
-    
-    BANKSEL PORTA
-    BSF PORTA,RB2	
-    
 MAIN
     NOP
     NOP
     NOP
-    
     GOTO MAIN
 
 TABLA
@@ -189,11 +168,6 @@ ISR
     SWAPF STATUS,W
     MOVWF SALVAS
     
-    BANKSEL PIR1
-    BTFSC PIR1, RCIF
-    CALL INT_SERIALPORT
-    
-    BANKSEL INTCON
     BTFSC INTCON,T0IF
     CALL INT_TMR0
     
@@ -207,41 +181,6 @@ ISR
     SWAPF SALVAW,W
     
     RETFIE
-    
-INT_SERIALPORT
-    
-    ;1 => ACTIVAR ALARMA
-    ;2 => DESACTIVAR ALARMA
-    ;3 => CAMBIAR CONTRASENIA
-    ;4 => ENVIAR ESTADO ALARMA
-    
-    BANKSEL RCREG
-    MOVF RCREG,W		    ; Se captura la informacion
-    MOVWF TEMPORAL
-    
-    MOVLW 0x30			    ; Se lo convierte a numero porque viene en ASCII
-    SUBWF TEMPORAL,W
-    MOVWF TEMPORAL		    ; Se guarda el numero convertido
-
-    CALL DISPLAY_7SEGMENTOS	    ; TODO: Quitar esto
-    MOVWF PORTD			    ; Se muestra en el display
-    
-    MOVF TEMPORAL,W		    ; Se cheque si se envio un 1
-    SUBLW 0X01
-    BTFSC STATUS,Z
-    CALL ACTIVAR_ALARMA
-    
-    MOVF TEMPORAL,W		    ; Se chequea si se envio un 2
-    SUBLW 0X02
-    BTFSC STATUS,Z
-    CALL DESACTIVAR_ALARMA
-    
-    MOVF TEMPORAL,W		    ; Se chequea si se envio un 4
-    SUBLW 0X04
-    BTFSC STATUS,Z
-    CALL ENVIAR_ESTADO_ALARMA
-    
-    RETURN
     
 INT_TECLADO
     BANKSEL PORTB
@@ -322,7 +261,7 @@ SR_KEY
     SUBLW d'11'			    ; Se presiono la tecla "#"????
     BTFSC STATUS,Z
     GOTO HABILITAR_COMUNICACION	    ; Si se presiono, voy a habilitar la comuncacion serial para recibir datos
-
+    
 CHEQUEO_CONTRASENA 
     MOVF KEYNUM,W
     CALL VALORES		    ; Llamo a la tabla para hacer la conversion de los valores
@@ -348,13 +287,12 @@ CHEQUEO_CONTRASENA
     INCF IGUALDADES_CONTRASENA,F    ; Coincide, aumento el indice
     
     MOVF IGUALDADES_CONTRASENA,W    ; Verifico si ya se ingresaron todos los digitos (2 en este caso)
-    SUBLW 0x04
+    SUBLW 0x02
     BTFSC STATUS,Z
     GOTO CHEQUEO_ALARMA		    ; Si, son iguales todos los digitos de la CONTRASENA
     RETURN
 
 CONTRASENA_INCORRECTA
-    ;TODO: Hacer sonar la alarmita por 5ms
     CLRF IGUALDADES_CONTRASENA
     RETURN
     
@@ -366,12 +304,11 @@ CHEQUEO_ALARMA
     GOTO DESACTIVAR_ALARMA
     
 ACTIVAR_ALARMA
-    CALL SEND_ACTIVANDO_ALARMA ; Aviso que la alarma se esta 
     ; Cargo la cuenta regresiva
     BANKSEL UNIDADES
-    MOVLW d'5'
+    MOVLW d'9'
     MOVWF UNIDADES
-    MOVLW d'1'
+    MOVLW d'2'
     MOVWF DECENAS
 
 CUENTA_REGRESIVA
@@ -486,16 +423,11 @@ ACTIVAR_BUZZER
     RETURN		    ; NO esta activada, vuelvo
 
 HABILITAR_COMUNICACION
-    ;BANKSEL PIE1
-    ;MOVLW b'00000000'
-    ;MOVWF PIE1
-    
     BANKSEL PORTA
     BSF PORTA,RB2		    ; Prendo un led indicando que esta en comunicacion
     CLRF CARACTERES_INGRESADOS	    ; Limpio caracteres ingresados
 ESPERA_COMUNICACION
- 
-   BANKSEL PIR1
+    BANKSEL PIR1
     BTFSS PIR1,RCIF		    ;Se chequea si llego la informacion completa
     GOTO ESPERA_COMUNICACION	    ;Vuelve al bucle, esperando que llegue todo
     
@@ -533,10 +465,13 @@ ESPERA_COMUNICACION
     ; 7. Esperar a que se complete (puede hacerse con polling de WR)
 WAIT_WRITE
     BTFSC EECON1, WR
-    GOTO  WAIT_WRITE	    ; Espera a que se borre el bit WR
-    
-    BSF   INTCON, GIE	    ; 8. Rehabilitar interrupciones
-    BCF   EECON1, WREN	    ; 9. Deshabilitar escritura para seguridad
+    GOTO  WAIT_WRITE     ; Espera a que se borre el bit WR
+
+    ; 8. Rehabilitar interrupciones
+    BSF   INTCON, GIE
+
+    ; 9. Deshabilitar escritura para seguridad
+    BCF   EECON1, WREN
     
     BANKSEL TEMPORAL
     MOVF TEMPORAL,W
@@ -547,72 +482,13 @@ WAIT_WRITE
     BANKSEL CARACTERES_INGRESADOS
     INCF CARACTERES_INGRESADOS,F    ; Incremento el valor de caracteres ingresados (para probar solo voy a usar contrase?as de 2 digitos)
     MOVF CARACTERES_INGRESADOS,W
-    SUBLW d'4'			    
-    BTFSS STATUS,Z		    ; Pregunto si los caracteres ingresados son 4
-    GOTO ESPERA_COMUNICACION	    ; No son 4, sigo guardando caracteres
+    SUBLW d'2'			    
+    BTFSS STATUS,Z		    ; Pregunto si los caracteres ingresados son 2
+    GOTO ESPERA_COMUNICACION	    ; No son 2, sigo guardando caracteres
     
-    BANKSEL PORTA		    ; Si son 4, salgo de la comunicacion
+    BANKSEL PORTA		    ; Si son 2, salgo de la comunicacion
     BCF PORTA,RA2		    ; Apago el led indicando que se termino la comunicacion
     
-    ;BANKSEL PIE1
-    ;MOVLW b'00100000'
-    ;MOVWF PIE1
     RETURN
-    
-ENVIAR_ESTADO_ALARMA
-    MOVF ACTIVADA,W		    ; Chequeo si la alarma esta activada
-    SUBLW 0x01
-    BTFSC STATUS,Z
-    GOTO SEND_ALARMA_ACTIVA	    ; SI esta activada
-    GOTO SEND_ALARMA_DESACTIVADA    ; NO esta activada
-    ;A => ALARMA ACTIVADA
-    ;B => ALARMA DESACTIVADA
-    ;C => ACTIVANDO ALARMA
-SEND_ALARMA_ACTIVA
-    MOVLW 'A'
-    GOTO SEND_CHAR
-    
-SEND_ALARMA_DESACTIVADA
-    MOVLW 'B'
-    GOTO SEND_CHAR
-
-SEND_ACTIVANDO_ALARMA
-    MOVLW 'C'
-    GOTO SEND_CHAR
-
-SEND_CHAR
-    BANKSEL PIR1
-    BTFSS   PIR1, TXIF
-    GOTO    $-1
-    BANKSEL TXREG
-    MOVWF   TXREG
-    RETURN
-
-Delay500ms
-    BANKSEL Delay1
-    movlw   d'5'      ; Bucle externo: 50 veces
-    movwf   Delay1
-
-Delay1_loop:
-    movlw   d'200'
-    movwf   Delay2
-
-Delay2_loop:
-    movlw   d'250'
-    movwf   Delay3
-
-Delay3_loop:
-    nop
-    nop
-    decfsz  Delay3, f
-    goto    Delay3_loop
-
-    decfsz  Delay2, f
-    goto    Delay2_loop
-
-    decfsz  Delay1, f
-    goto    Delay1_loop
-
-    return
     
     END

@@ -1,3 +1,3 @@
 build/default/production/main.o:  \
-	C:/Users/Usuario/Desktop/mplabtest/comunicacionSerial.X/main.asm  \
+	D:/Programacion/Facultad/TP-Final-ED2/comunicacionSerial.X/main.asm  \
 

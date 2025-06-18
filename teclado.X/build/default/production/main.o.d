@@ -1,3 +1,3 @@
 build/default/production/main.o:  \
-	C:/Users/Usuario/Desktop/mplabtest/teclado.X/main.asm  \
+	D:/Programacion/Facultad/TP-Final-ED2/teclado.X/main.asm  \
 
