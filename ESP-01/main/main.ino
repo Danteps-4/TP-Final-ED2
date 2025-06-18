@@ -13,14 +13,16 @@
 
 const char* ssid = APSSID;
 const char* password = APPSK;
-const char* baseUrl = "http://192.168.1.173:8001/getInstrucciones";
-const char* urlGetNuevaPass = "http://192.168.1.173:8001/getNuevaContrasenia";
-const char* urlSendData = "http://192.168.1.173:8001/sendData";
+const char* baseUrl = "http://alarma.ed2.itcorporativa.com.ar/getInstrucciones";
+const char* urlGetNuevaPass = "http://alarma.ed2.itcorporativa.com.ar/getNuevaContrasenia";
+const String urlSendData = "http://alarma.ed2.itcorporativa.com.ar/sendData";
 
 // Variables para almacenar el SSID y la contraseña de la red WiFi.
 String ssidGuardado = "";
 String passwordGuardada = "";
-
+String ultimoDato = "";  // Acá guardamos lo que venga del PIC
+unsigned long ultimaPeticion = 0;
+const unsigned long intervalo = 2000;  // cada 2 segundos
 
 ESP8266WebServer server(80);
 
@@ -42,47 +44,17 @@ void setup() {
 
   leerCredenciales();  // Lee SSID y Password de la EEPROM.
 
-
-  WiFi.begin(ssidGuardado.c_str(), passwordGuardada.c_str());
-
-  unsigned long tiempoInicio = millis();
-  while (WiFi.status() != WL_CONNECTED && millis() - tiempoInicio < 15000) {
-    delay(500);
-  }
-
-  if (WiFi.status() == WL_CONNECTED) {
-
-    while (WiFi.status() == WL_CONNECTED) {
-      HTTPClient http;
-      WiFiClient client;
+  if (ssidGuardado.length() > 0) {  //Si tengo el SSID intento conectarme. Sino inicio en modo AP directamente
+    WiFi.begin(ssidGuardado.c_str(), passwordGuardada.c_str());
+    unsigned long tiempoInicio = millis();
+    while (WiFi.status() != WL_CONNECTED && millis() - tiempoInicio < 15000) {
       delay(500);
-      http.begin(client, baseUrl);
-
-      int httpCode = http.GET();
-      if (httpCode > 0) {
-        String payload = http.getString();
-        if (payload == "activarAlarma") {
-          Serial.print("1");
-        } else if (payload == "desactivarAlarma") {
-          Serial.print("2");
-        } else if (payload == "cambiarWifi") {
-          limpiarEPROM();
-          ESP.restart();
-        } else if (payload == "reiniciarESP") {
-          ESP.restart();
-        } else if (payload == "cambiarContrasenia") {
-          String nuevaClave = getContraseniaNueva();
-          Serial.print("3");
-          delay(500);
-          Serial.print(nuevaClave);
-        } else {
-        }
-      } else {
-      }
-      http.end();
-      delay(2000);
     }
-    ESP.restart();
+    //Si no se conecto al wifi, lo inicio en modo AP para configurarlo.
+    if (WiFi.status() != WL_CONNECTED) {
+      limpiarEPROM();  //Limpio la EPROM
+      ESP.restart();   // Reinicio para que inicie en modo AP
+    }
   } else {
     iniciarConfiguracionAP();
   }
@@ -91,13 +63,27 @@ void setup() {
 
 
 void loop() {
-
   if (Serial.available()) {
-    char c = Serial.read();
-    Serial.print("Recibido: ");
-    Serial.println(c);
+    ultimoDato = Serial.readStringUntil('\n');  // Leer hasta salto de línea
+    enviarUltimoDato(ultimoDato);
   }
+
   server.handleClient();
+
+
+  if (WiFi.status() == WL_CONNECTED) {
+    unsigned long ahora = millis();
+    if (ahora - ultimaPeticion >= intervalo) {
+      ultimaPeticion = ahora;
+      peticionInstrucciones();  // función nueva para procesar instrucciones del backend
+    }
+  } else if (ssidGuardado.length() > 0) {  //Tengo un wifi para conectarme
+    //Si pasaron mas de 30s desde la ultima peticion, reinicio el modulo. Algo esta mal
+    unsigned long ahora = millis();
+    if (ahora - ultimaPeticion >= 30000) {
+      ESP.restart();
+    }
+  }
 }
 
 void iniciarConfiguracionAP() {
@@ -110,6 +96,48 @@ void iniciarConfiguracionAP() {
 }
 
 
+
+void peticionInstrucciones() {
+  HTTPClient http;
+  WiFiClient client;
+  delay(10);
+  http.begin(client, baseUrl);
+
+  int httpCode = http.GET();
+  if (httpCode > 0) {
+    String payload = http.getString();
+    if (payload == "3") {
+      String nuevaClave = getContraseniaNueva();
+      Serial.print("3");
+      delay(200);
+      Serial.print(nuevaClave[0]);
+      delay(200);
+      Serial.print(nuevaClave[1]);
+      delay(200);
+      Serial.print(nuevaClave[2]);
+      delay(200);
+      Serial.print(nuevaClave[3]);
+    } else if (payload == "5") {
+      //Cambiar WIFI
+      limpiarEPROM();
+      delay(500);
+      ESP.restart();
+    } else {
+      Serial.print(payload);
+    }
+  } else {
+  }
+  http.end();
+}
+
+void enviarUltimoDato(String dato) {
+  HTTPClient http;
+  WiFiClient client;
+  delay(10);
+  http.begin(client, urlSendData + "?dato=" + dato);
+  int httpCode = http.GET();
+  http.end();
+}
 
 
 
@@ -196,9 +224,11 @@ String formularioHTML() {
          ".container { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px; text-align: center; }"
          "h2 { color: #333; margin-bottom: 20px; }"
          "form { display: flex; flex-direction: column; gap: 15px; }"
-         "input[type='text'], input[type='password'] { padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }"
+         "input[type='text'], input[type='password'], input[type='submit'] { padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; box-sizing: border-box; }"
          ".password-container { position: relative; }"
-         ".toggle-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px; }"
+         ".password-container input { padding-right: 40px; }"
+         ".toggle-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; width: 24px; height: 24px; padding: 0; }"
+         ".toggle-password svg { width: 24px; height: 24px; fill: #666; }"
          "input[type='submit'] { background-color: #007bff; color: white; padding: 12px 20px; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease; }"
          "input[type='submit']:hover { background-color: #0056b3; }"
          "</style>"
@@ -212,7 +242,11 @@ String formularioHTML() {
          "<label for='pass'>Password:</label>"
          "<div class='password-container'>"
          "<input type='password' id='pass' name='pass'>"
-         "<button type='button' class='toggle-password' onclick='togglePassword()'>👁️</button>"
+         "<button type='button' class='toggle-password' onclick='togglePassword()'>"
+         "<svg id='eye-icon' viewBox='0 0 24 24'>"
+         "<path d='M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5C21.27 7.61 17 4.5 12 4.5zm0 12c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-7.5a3 3 0 100 6 3 3 0 000-6z'/>"
+         "</svg>"
+         "</button>"
          "</div>"
          "<input type='submit' value='Guardar'>"
          "</form>"
@@ -220,10 +254,13 @@ String formularioHTML() {
          "<script>"
          "function togglePassword() {"
          "  var passInput = document.getElementById('pass');"
+         "  var eyeIcon = document.getElementById('eye-icon');"
          "  if (passInput.type === 'password') {"
          "    passInput.type = 'text';"
+         "    eyeIcon.innerHTML = \"<path d='M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5 2.06 0 3.97-.52 5.64-1.45l2.11 2.11 1.41-1.41L3.51 3.51 2.1 4.92l3.11 3.11A10.96 10.96 0 001 12c1.73 4.39 6 7.5 11 7.5 2.27 0 4.39-.66 6.15-1.78l1.93 1.93 1.41-1.41L4.92 2.1 3.51 3.51l2.45 2.45C4.27 7.4 2.73 9.59 2.73 12c0 .57.05 1.13.15 1.67l1.57 1.57C4.05 14.38 4 13.7 4 13c0-4.97 4.03-9 9-9 1.16 0 2.26.21 3.26.59l2.48 2.48c-1.04-.59-2.2-.92-3.48-.92z'/>\";"
          "  } else {"
          "    passInput.type = 'password';"
+         "    eyeIcon.innerHTML = \"<path d='M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5C21.27 7.61 17 4.5 12 4.5zm0 12c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-7.5a3 3 0 100 6 3 3 0 000-6z'/>\";"
          "  }"
          "}"
          "</script>"
@@ -235,7 +272,7 @@ String formularioHTML() {
 String getContraseniaNueva() {
   HTTPClient http;
   WiFiClient client;
-  delay(500);
+  delay(10);
   http.begin(client, urlGetNuevaPass);
   int httpCode = http.GET();
   if (httpCode > 0) {
