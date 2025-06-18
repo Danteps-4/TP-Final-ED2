@@ -1,0 +1,21 @@
+{
+  "name": "pic-serial",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "nodemon": "^3.1.10",
+    "serialport": "^13.0.0",
+    "ws": "^8.18.2"
+  }
+}
