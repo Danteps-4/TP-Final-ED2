@@ -87,9 +87,9 @@ INICIO
     CLRF CONT1
     CLRF IGUALDADES_CONTRASENA
     
-    ; Desactivar módulo USART
+    ; Desactivar mÃ³dulo USART
     BANKSEL TXSTA
-    BCF TXSTA, TXEN    ; Apaga la transmisión
+    BCF TXSTA, TXEN    ; Apaga la transmisiÃ³n
     BANKSEL RCSTA
     BCF RCSTA, SPEN    ; Apaga el puerto serie (TX y RX)
         
